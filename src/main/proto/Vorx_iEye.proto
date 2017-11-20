@@ -1,0 +1,781 @@
+//Version --1.0.1.3_20170817
+//下发接口中的devno参数改为devid
+//ReportEventRequest中的资源UID改为资源编号
+//ReportDevStatesRequest中的资源UID改为资源编号
+//LableInfo 标签 sResUid改为sResNo
+//下发录像IssuedRecordCamRequest sDevNo改为nDevId；增加nResID
+//SearchRecReply  增加 sResNo
+
+syntax = "proto3";
+
+option java_multiple_files = true;  
+option java_package = "com.vorxsoft.ieye.proto";  
+option java_outer_classname = "VSieye";
+
+package Vorx_iEye;
+//-----------------------------**************************---------------------------	
+service VsIeyeProto {	
+
+//数据下发协议
+	rpc IssuedReslist(IssuedReslistRequest) returns (DefaultReply){} 			//下发视频设备资源表
+	rpc IssuedRecordTime(IssuedRecordTimeRequest) returns (DefaultReply){} 		//下发录像时间模板
+	rpc IssuedRecordPlan(IssuedRecordPlanRequest) returns (DefaultReply){} 		//下发录像计划模板ti_record_plan
+	rpc IssuedRecordCam(IssuedRecordCamRequest) returns (DefaultReply){}		//下发录像计划与摄像机关联表		
+//日志
+//	rpc SentVSLog(VSLogRequest) returns(VSLogResponse);
+//	rpc SentMultiVSLog(MultiVSLogRequest) returns(MultiVSLogResponse);
+//会话
+	rpc  Login (LoginRequest) returns (LoginReply) {}
+	rpc  Logout(LogoutRequest) returns (LogoutReply){}
+	rpc  SendHeart(SendHeartRequest) returns (SendHeartReply){}
+//媒体会话
+	rpc  PlayLive(LiveRequest) returns (LiveReply){}					//实时流播放
+//	rpc  PlayLiveScreen(LiveRequest) returns (LiveReply){}				//实时流上墙(-->vag)	
+	rpc  PlayLiveScreen(LiveScreenRequest) returns (LiveScreenReply){}		//申请实时流上墙(-->vms)
+    rpc  FullScreen(FullScreenRequest) returns (DefaultReply){}         //4HD全屏/恢复
+    rpc  DynSplitScreen(DynSplitScreenRequest) returns(DefaultReply){}  //4HD动态分屏
+	rpc  SearchRec(SearchRecRequest) returns (SearchRecReply){}			//录像查询	
+//	rpc  SearchRecClose(SearchRecCloseRequest) returns (DefaultReply){}	//释放录像查询信息	
+	rpc  PlayRec(PlayRecRequest) returns (PlayRecReply){}				//录像播放	
+	rpc  PlayRecScreen(PlayRecRequest) returns (PlayRecReply){}			//录像上墙
+	rpc  StopVideo(StopVideoRequest) returns (DefaultReply){}     		//停止视频流,实时视频、历史回放、录像下载都可以通过此接口停止。
+	rpc  StopScreen(StopScreenRequest) returns (DefaultReply){}      	//停止上墙
+	rpc  DownloadRec(PlayRecRequest) returns (PlayRecReply){}      	    //下载录像
+	rpc  RecPlayPause(RecPlayPauseRequest) returns (DefaultReply){} 	//录像暂停
+	rpc  RecPlayplay(RecPlayPlayRequest) returns (DefaultReply){} 	    //录像播放
+    rpc  RecPlaySpeed(RecPlaySpeedRequest) returns (DefaultReply){} 	//录像倍速控制
+    rpc  RecPlayJump(RecPlayJumpRequest) returns (DefaultReply){} 		//录像跳转播放
+    rpc  GetRecPlayTime(RecPlayTimeRequest) returns (RecPlayTimeReply){}//获取录像播放时间
+    rpc  SetPlayLable(SetPlayLableRequest) returns (DefaultReply){} 	//设置录像标签
+	
+//对讲	
+    rpc StartTalk(StartTalkRequest) returns (StartTalkReply){} 		    //开启对讲
+    rpc StopTalk(StopTalkRequest) returns (DefaultReply){} 		        //关闭对讲
+
+//控制		
+	rpc PTZControl(PTZControlRequest) returns (DefaultReply){} 	        //ptz控制	
+	rpc PTZPreset (PTZPresetRequest) returns (PTZPresetReply){}         //预置位设置
+	rpc PTZCruise (PTZCruiseRequest) returns (PTZCruiseReply){}         //巡航设置*************/	
+	rpc SwitchSequence(SwitchSequenceRequest) returns (DefaultReply){}  //切换序列
+//		rpc SwitchPlan(SwitchPlanRequest) returns (DefaultReply){}      //切换方案
+//		rpc SwitchTask(SwitchTaskRequest) returns (DefaultReply){}      //切换任务		
+	rpc  RecordControl(RecordControlRequest) returns (DefaultReply){}   //启动/停止录像
+	rpc  GuardControl(GuardControlRequest) returns (DefaultReply){}     //布防撤防
+	rpc  AlarmControl(AlarmControlRequest) returns (DefaultReply){}     //报警输出控制	
+	rpc  EventSubscribe(EventSubscribeRequest) returns (DefaultReply){} //事件订阅
+	
+	rpc  Reboot(RebootRequest) returns (DefaultReply){}                 //重启资源或服务
+	rpc  SetOSD(SetOSDRequest) returns (SetOSDReply){}                  //字符叠加		
+	rpc  Reload(ReloadRequest) returns (DefaultReply){}                 //通知服务重新加载数据	
+	
+	rpc  GetDevState(DefaultRequest) returns (ReportDevStatesRequest){}      //获取设备资源状态
+	rpc  GetDevChannels(GetDevChnRequest) returns (DevChannelsReply){}            //获取设备通道
+	
+//上报结果	
+	rpc ReportEvent(ReportEventRequest) returns (DefaultReply){}             //上报事件
+	rpc ReportDevStates(ReportDevStatesRequest) returns (DefaultReply){}     //上报状态
+	rpc ReportDefaultResult(DefaultReport) returns (DefaultReply){}          //上报默认执行结果	
+	rpc ReportDowloadRecFinish(ReportDowloadRecFinishRequest) returns (DefaultReply){} //通知录像下载结束
+	
+	rpc PlayLiveResult(LiveReply) returns (DefaultReply){}              //上报实时流和录像播放结果(vag-->)	
+	rpc PlayLiveScreenResult(LiveScreenReply) returns (DefaultReply){}  //上报实时流和录像上墙结果(vms-->)
+
+	
+	rpc GetDevChannelsResult(DevChannelsReply) returns (DefaultReply){} //上报通道查询结果
+	rpc SearchRecResult(SearchRecReply) returns (DefaultReply){}        //上报录像查询结果
+	rpc PlayRecResult(PlayRecReply) returns (DefaultReply){}            //上报录像申请结果
+	rpc PlayRecScreenResult(PlayRecReply) returns (DefaultReply){}      //上报录像上墙结果
+	rpc GetRecPlayTimeResult(RecPlayTimeReply) returns (DefaultReply){} //上报录像播放时间	
+	
+	rpc PTZPresetResult(PTZPresetReply) returns (DefaultReply){}        //上报预置位设置结果
+	rpc PTZCruiseResult(PTZCruiseReply) returns (DefaultReply){}        //上报巡航设置结果
+	rpc SetOSDResult(SetOSDReply) returns (DefaultReply){}              //上报OSD设置结果
+	rpc StartTalkResult(StartTalkReply) returns (DefaultReply){}        //上报对讲结果
+	
+}
+enum SPLIT_SCREEN_MODE{
+	SSM_1x1=0;
+    SSM_2x2=1;
+    SSM_3x3=2;
+    SSM_4x4=3;
+}
+message DynSplitScreenRequest{
+	string sResUid=1;	          //屏幕资源uid
+    int32  nWindow=2;	          //window（解码通道）
+	string sDevNo=3;	          //设备编号
+	SPLIT_SCREEN_MODE  emMode=4;  //分屏模式
+	string sBusinessID =5;        //业务ID
+}
+message FullScreenRequest{	
+	string sResUid=1;	          //屏幕资源uid
+    int32  nWindow=2;
+	string sDevNo=3;	          //设备编号
+	int32  nFull=4;               //0-取消全屏 1全屏
+	string sBusinessID =5;        //业务ID
+}
+message GetDevChnRequest{	
+	int32  nDevID=1;				//设备id
+	string sDevNo=2;				//设备No
+	string sBusinessID =3;          //业务ID
+}
+message DevChannelsReply{
+	message Devchnl{	
+        string sResname =1;				//资源名称
+        string sResType=2;				//资源类型
+        int32  sChnType=3;				//通道类型
+		int32  nDevID=4;				//设备id
+	    string sResUid =5;	            //资源UID
+		int32  nState=6;				//资源状态 0-离线;1-在线;2-未知
+	    string sResno=7;				//资源编号
+	}
+	string sBusinessID =1;              //业务ID
+    int32 result=2;                 //返回值
+	repeated Devchnl devchnls=3;		
+}
+message ReportDowloadRecFinishRequest{
+	int32  nStreamID=1;	            //流ID
+    int32 result=2;                 //返回值	
+	string sBusinessID =3;          //业务ID
+}
+message PTZPresetReply{
+	string sPresetToken=1;          //添加时返回（可不返回）
+    int32 result=2;                 //返回值	
+	string sBusinessID =3;          //业务ID	
+	string sPresetNo =4;            //编号
+}
+message PTZCruiseReply{
+	string sCruiseToken=1;          //添加时返回
+    int32 result=2;                 //返回值
+	string sBusinessID =3;          //业务ID	
+	string sPresetNo =4;            //编号
+}
+message ReportDevStatesRequest{
+	message ResStates{		
+		string sResNo=1;				//资源编号
+		int32 nResID=2;					//资源id
+		int32  nState=3;				//状态 0-离线;1-在线;2-未知
+	}
+	message DevStates{	
+		int32 nDevID=1;				    //设备id
+		int32  nState=2;				//设备状态 0-离线;1-在线;2-未知
+	    repeated ResStates resstates=3;	//资源信息
+	}
+	repeated DevStates devstates=1;		
+	string sBusinessID =2;              //业务ID
+}
+message EventSubscribeRequest{	
+    message EventSubInfo{
+        int32  nResID=1;		    //资源ID
+        string sResNo=2;			//资源编号
+		string sResUID=3;			//资源UID
+        string sDevNo=4;            //设备编号
+    }
+	string sBusinessID =1;              //业务ID
+	string sEventType=2;                //事件类型
+	repeated EventSubInfo events=3;	
+}
+message ReportEventRequest{
+	message Events{
+		string sResNo=1;                //资源no	
+		string sDevNo=2;				//设备编号
+		string sEventName=3;            //事件名称
+		string sEventType=4;            //事件类型
+		string sHappentime=5;           //事件时间	
+		int32  nEventID=6;              //事件ID（可不处理）
+		string sDevName=7;              //设备名称（可不赋值）
+	    string sResName=8;              //资源名称（可不赋值）
+		string sPicpath=9;              //事件图片	
+		string sEventlevel=10;          //事件级别
+	}	
+	repeated 	Events events=1;			
+	string sBusinessID =2;              //业务ID
+}
+
+////数据结构**********
+enum OPT_ACT{
+	OA_ADD=0;   //增
+	OA_MOD=1;	//改
+	OA_DEL=2;	//删
+	OA_QUR=3;	//查	
+	OA_ON=4;    //开，开始
+	OA_OFF=5;   //关，停止		
+	OA_OTHER=6; //其它	
+	OA_ALL_ISSUE=7; //全部下发	
+}
+message StartTalkReply{
+	int32  nStreamID=1;	        //流ID	
+	string strSrcIP=2;	        //视频发流IP     
+	int32  nSrcPort=3;	        //视频发流端口 
+	string strDesIP=4;	        //对讲音频收流IP     
+	int32  nDesPort=5;	        //对讲音频收流端口 
+	int32  nAudioFormat=6;      //”1-G.711a 2-G.711u 3-G.723.1 4-G.729 5-G.722.1 6-aac”
+	int32  nMaxBitRat=7;	    //”1-5.3k 2-6.3k 3-8k 4-16k 5-24k 6-32k 7-48k 8-64k”
+    int32  nChannelType=8;      //1-单通道 2-双声道立体声
+    int32 result=9;             //返回值
+	string sBusinessID =10;     //业务ID
+}
+
+message IssuedReslistRequest{
+    message ResInfo{
+        int32  nResID=1;		    //资源ID
+        string sResNo=2;			//资源编号
+        string sResName=3;			//资源名称
+        string sResType=4;			//资源类型	
+		int32  nDevID=5;			//设备ID	
+		string sResUID=6;			//资源UID
+        int32  nChnType=7;          //通道类型
+        string sDevNo=8;            //设备编号
+		int32  nSio_mode=9;         //开关量模式 0-常开；1-常闭
+    }
+	message SioResInfo{
+        int32  nResID=1;		    //资源ID
+        string sResNo=2;			//资源编号
+        string sResName=3;			//资源名称
+        string sResType=4;			//资源类型	
+		int32  nDevID=5;			//设备ID	
+		string sResUID=6;			//资源UID
+        int32  nChnType=7;          //通道类型
+        string sDevNo=8;            //设备编号
+		int32  nSio_mode=9;         //开关量模式 0-常开；1-常闭
+    }
+	
+	message ScreenResInfo{
+        int32  nResID=1;		    //资源ID
+        string sResNo=2;			//资源编号
+        string sResName=3;			//资源名称
+        string sResType=4;			//资源类型	
+		int32  nDevID=5;			//设备ID	
+		string sResUID=6;			//资源UID
+        int32  nChnType=7;          //通道类型
+        string sDevNo=8;            //设备编号
+		int32  flag_split =9;
+        int32  display_mode=10;
+        int32  resolution=11;
+        int32  split_ability=12;
+        int32  split_mode=13;
+        int32  switch_mode=14;
+    }
+	message DevInfo{
+        int32  nDevID=1;			//设备ID
+        string sDevNo=2;			//设备编号
+        string sDevName=3;			//设备名称
+        string sDevType=4;          //设备类型
+		string sProtoType=5;		//协议
+		int32  nChnVideo=6;         //视频通道数（编码&智能分析）
+        int32  nChn_alarmin=7;      //报警输入（编码&开关量）
+        int32  nChn_alarmout=8;     //报警输出（编码&开关量）
+		string sIp=9;
+		int32  nPort=10;
+		string sUsername=11;
+		string sPassword=12;
+		string sWeb_mgr=13;		   //
+    }
+	message DecDevInfo{
+        int32  nDevID=1;			//设备ID
+        string sDevNo=2;			//设备编号
+        string sDevName=3;			//设备名称
+        string sDevType=4;          //设备类型
+		string sProtoType=5;		//协议
+		int32  nChnDec=6;
+        int32  nDecMod=7;
+		string sIp=8;
+		int32  nPort=9;
+		string sUsername=10;
+		string sPassword=11;
+		string sWeb_mgr=12;	
+    }
+message MatrixDevInfo{
+        int32  nDevID=1;		     //设备ID
+        string sDevNo=2;			 //设备编号
+        string sDevName=3;			 //设备名称
+        string sDevType=4;           //设备类型
+		string sProtoType=5;		 //协议		
+		string sIp=6;
+		int32  nPort=7;
+		string sUsername=8;
+		string sPassword=9;
+		string sWeb_mgr=10;		
+	    int32 chn_videoin=11;        //视频输入通道数量（矩阵）
+	    int32 chn_videoout=12;       //视频输出通道数量（矩阵）
+	    int32 com=13;                //通信串口（矩阵&开关量）
+	    int32 addr=14;               //通信地址（矩阵&开关量）
+    }
+message SioDevInfo{
+        int32  nDevID=1;		     //设备ID
+        string sDevNo=2;		     //设备编号
+        string sDevName=3;		     //设备名称
+        string sDevType=4;           //设备类型
+		string sProtoType=5;	     //协议		
+		string sIp=6;
+		int32  nPort=7;
+		string sUsername=8;
+		string sPassword=9;
+        int32  nChn_alarmin=10;      //报警输入（开关量）
+        int32  nChn_alarmout=11;     //报警输出（开关量）
+	    int32 com=12;                //通信串口（开关量）
+	    int32 addr=13;               //通信地址（开关量）
+    }
+	message IaDevInfo{
+        int32  nDevID=1;		    //设备ID
+        string sDevNo=2;		    //设备编号
+        string sDevName=3;		    //设备名称
+        string sDevType=4;          //设备类型
+		string sProtoType=5;	    //协议		
+		string sIp=6;
+		int32  nPort=7;
+		string sUsername=8;
+		string sPassword=9;
+		string sWeb_mgr=10;		
+		int32  nChnVideo=11;        //视频通道数（智能）
+    }
+	repeated DevInfo msDevInfoList=1;
+	repeated ResInfo msResInfoList=2;
+	OPT_ACT emAct=3;
+	string sBusinessID =4;  						//业务ID
+	repeated DecDevInfo msDecDevInfoList=5;         //解码设备表
+	repeated MatrixDevInfo msMatrixDevInfoList=6;   //矩阵设备表
+	repeated SioDevInfo msSioDevInfoList=7;         //开关量设备表
+	repeated IaDevInfo msIaDevInfoList=8;           //智能分析设备表
+//	repeated SioResInfo msSioResInfoList=7;         //开关量资源表
+//	repeated ScreenResInfo msScreenResInfoList=8;   //屏幕资源表
+
+}
+message IssuedRecordTimeRequest{
+	message RecTimePlan{
+		int32   nTimeplanID=1;						//时间计划ID
+		string  sTimeplanName=2;					//时间计划名称
+		string  sSchedule=3;                        //时间计划json
+	}	
+	repeated RecTimePlan msRecTimePlan =1;
+	OPT_ACT emAct=2 ;  						        //操作
+	string sBusinessID =3;  						//业务ID
+}
+message IssuedRecordPlanRequest{
+	message RecPlan{
+		int32   nRecplanID=1;
+		int32   nEnableState=2;
+		string  sRecplanName=3;
+		int32   nRecTimeplanid=4;
+		int32   nStreamType=5;
+		int32   nPreRecord=6;
+		int32   nDelayRecord=7;
+		int32   nFlagRedundant=8;
+		int32   nFlagOverwrite=9;
+		int32   nFlagAudio=10;
+		int32   nExpiredTime=11;
+		int32   nFileSize=12;
+		string  sRecPath=13;
+		int32   nFreeSpace=14;
+	}
+	repeated RecPlan msRecPlan =1;
+	OPT_ACT emAct=2 ;
+	string sBusinessID =3;  							//业务ID
+}
+message IssuedRecordCamRequest{
+	message RecCam{
+		string 	sDevNo=1;								//设备编号
+		string 	sCamUid=2;								//摄像机uid
+		int32   nRecplanId=3;                        	//录像计划模板ID
+		string  sProtoType=4;							//协议类型
+		int32   nResID=5;							    //资源ID
+		int32 	nDevId=6;								//设备ID
+	}
+	repeated RecCam msRecCam =1;
+	OPT_ACT emAct =2;
+	string sBusinessID =3;  								//业务ID
+}
+
+//-----------------------------**************************---------------------------	
+enum PTZ_ACT
+{
+    PTZ_STOP=0;                    	//停止
+    PTZ_UP=1;                      	//上
+    PTZ_DOWN=2;                    	//下
+    PTZ_LEFT=3;                    	//左
+    PTZ_RIGHT=4;                   	//右
+    PTZ_LEFT_UP=5;                 	//左上
+    PTZ_LEFT_DOWN=6;               	//左下
+    PTZ_RIGHT_UP=7;                	//右上
+    PTZ_RIGHT_DOWN=8;              	//右下
+    PTZ_ZOOM_OUT=9;                	//镜头远
+    PTZ_ZOOM_IN=10;                 //镜头近
+    PTZ_FOCUS_NEAR=11;              //焦距近
+    PTZ_FOCUS_FAR=12;               //焦距远
+    PTZ_IRIS_BIG=13;                //光圈大
+    PTZ_IRIS_SMALL=14;              //光圈小
+    PTZ_WIPER_OPEN=15;              //雨刷开
+    PTZ_WIPER_CLOSE=16;             //雨刷关
+    PTZ_LIGHT_OPEN=17;              //灯光开
+    PTZ_LIGHT_CLOSE=18;             //灯光关
+    PTZ_HEAT_OPEN=19;               //加热开
+    PTZ_HEAT_CLOSE=20;              //加热关
+    PTZ_FAN_OPEN=21;              	//风扇开
+    PTZ_FAN_CLOSE=22;             	//风扇关
+    PTZ_CALL_PRESET=23;             //调预置位
+    PTZ_SET_PRESET=24;              //设置预置位
+    PTZ_DEL_PRESET=25;              //删除预置位
+}
+message PTZControlRequest{
+	string sResUid=1;		//摄像机uid
+	PTZ_ACT emAct =2;		//PTZ操作
+	string sDevNo=3;	    //设备编号
+	int32 npSpeed=4;		//p速度
+	int32 ntSpeed=5;		//t速度
+	int32 nzSpeed=6;		//z速度
+	string sBusinessID =7;  								//业务ID
+}
+
+message PTZPresetRequest{
+	string sResUid=1;		//摄像机uid
+	PTZ_ACT emAct =2;		//PTZ操作
+	string sDevNo=3;		//设备编号
+	string sPresetToken=4;	//预置位Token（可不处理，预留）
+	string  sPresetNo=5;	//预置位编号/名称（按数字传递），预置位标识。
+	string sBusinessID =6;  //业务ID
+}
+
+message PTZCruiseRequest{	
+	message CruiseParam{
+		string sPresetNo =1;	//预置位编号/名称（按数字传递），预置位标识。
+		int32 nTime =2;     	//停留时间     
+		int32 nSpeed =3;		//速度
+		int32 npresetindex=4;   //预置位序号
+	}
+	string sResUid=1;		//摄像机uid
+	OPT_ACT emAct =2;		//巡航操作 ADD表示添加巡航预置点，DEL表示删除巡航或预置点，START表示启动扫描，STOP表示停止扫描，SET表示设置巡航速度（取值为1-255），设置巡航停留时间（取值为1-0xFFF)
+	string sDevNo=3;	    //设备编号
+	string sCruiseToken =4;
+	repeated CruiseParam  msParam=5;		//巡航其他参数--预置点号、速度、时间等
+	string sBusinessID =6;  				//业务ID
+	string cruise_no =7;  					//编号
+	string cruise_name =8;  				//名称
+	}
+message SwitchSequenceRequest{
+	int32  nSequenceNo=1;
+	int32  nScreenId=2;
+	string sDevNo=3;     //设备编号
+	int32  nAct=4;     //1：开始     0：停止	
+	string  sBusinessID =5;  		//业务ID
+}
+message SwitchPlanRequest{
+	int32  nPlanNo=1;
+	int32  nAct=2;     //1：开始     0：停止
+	string sDevNo=3;     //设备编号	
+	string  sBusinessID =4;  		//业务ID
+}
+message SwitchTaskRequest{
+	int32  nTaskNo=1;
+	int32  nAct=2;     //1：开始     0：停止
+	string sDevNo=3;     //设备编号	
+	string  sBusinessID =4;  		//业务ID
+}
+message RecordControlRequest{
+	string sResUid=1;
+	string sDevNo=2;     //设备编号
+	bool	bStart=3;     //1启动 0停止
+	string  sBusinessID =4;  		//业务ID
+}
+message GuardControlRequest{
+	string sResUid=1;
+	bool	bStart=2;     //1启动 0停止
+	string sDevNo=3;     //设备编号
+	string  sBusinessID =4;  		//业务ID
+}
+
+message AlarmControlRequest{
+	string sResUid=1;    //资源id
+	string sDevNo=2;	 //设备编号
+	int32  nCmd=3;       //1-打开报警  0-关闭报警   2-复位
+	string  sBusinessID =4;  		//业务ID
+}
+message RebootRequest{
+	string sResUid=1;    //资源
+	string sSvrid=2;     //服务id
+	string sDevNo=3;     //设备编号
+	bool  bSoftorHard=4; //0-软件  1-硬件
+	string  sBusinessID =5;  		//业务ID
+}
+
+message SetOSDRequest{
+	string sResUid=1;    //资源
+	string sDevNo=2;     //设备编号
+	string sPlainText=3;     //叠加字符串
+	float  fPosx=4;//osd x轴坐标值  （以视频图片中心为坐标原点，值  -1~1）
+	float  fPosy=5;//OSD y轴坐标的值  （以视频图片中心为坐标原点，值  -1~1）	
+	int32  ntextType=6;	//文字OSD类型   0:Plain（文字）  1:DateAndTime（日期时间）2:Date 3:Time
+	string sDateFormat=7;	// 日期格式 ex：yyyy-MM-dd （textType为1时赋值）
+	string sTimeFormat=8;	//时间格式 ex：HH:mm:ss  （textType为1时赋值）
+	int32  nFontSize=9;	//文字字体大小
+	string sOSDToken=10; //osd的token ，修改和删除时使用
+	OPT_ACT emOsdAct=11;    //操作----添加 删除 修改
+	string  sBusinessID =12;  		//业务ID
+}
+message SetOSDReply{
+	string sOSDToken=1; //添加时返回
+    int32 result=2;        //返回值	
+	string sBusinessID =3;          //业务ID
+}
+enum RELOAD_TYPE{
+	REL_DEV_INFO=0;     //设备
+	REL_RES_INFO=1;	    //资源
+	REL_REC_PLAN=2;	    //录像计划
+	REL_REC_TIME=3;	    //录像时间	
+	REL_REC_CAM=4;      //录像计划与摄像机关联
+	REL_EVENT_INFO=5;   //事件信息
+	REL_EVENT_GUARD=6;  //事件布防
+	REL_EVENT_CONTACTS=7;  //事件联系人
+	REL_EVENT_Storm=8;  //事件风暴
+	REL_EVENT_LINKAGE=9;  //事件联动
+}
+message ReloadRequest{
+	RELOAD_TYPE loadType=1;     //重载类型
+	string  sBusinessID =2;  	//业务ID
+}
+message RunLogRequest{
+	int32 nSvrId =1;		    //服务ID
+	string strSvrName =2;		//服务名称
+	string strLogType=3;		//日志类型
+	string strTime=4;		    //时间
+	string strLogContent=5;		//内容
+	int32 nLogLevel=6;		    //级别
+	string strModuleName=7;		//模块名称
+	string  sBusinessID =8;  		    //业务ID
+} 
+message StartTalkRequest{
+	int32 nStreamID=1;		   //流ID
+	string sResUid=2;		   //摄像机uid
+	string sDevNo=3;	       //设备编号
+	string  sBusinessID =4;  		   //业务ID
+}
+message StopTalkRequest{
+	int32 nStreamID=1;		   //流ID
+	string sResUid=2;		   //摄像机uid
+	string sDevNo=3;	       //设备编号
+	string  sBusinessID =4;  		   //业务ID
+}
+message SetPlayLableRequest{
+	int32 nStreamID=1;		   //流ID
+	repeated LableInfo msLabelInfo=2;    //标签	
+	string  sBusinessID =3;  		     //业务ID
+}
+message RecPlayTimeRequest{
+	int32 nStreamID=1;		//流ID
+	string  sBusinessID =2;  		//业务ID
+}
+message RecPlayTimeReply{
+	int32 nPlayPosTime=1; 		//偏移量
+    int32 result=2;        //返回值
+	string sBusinessID =3;          //业务ID
+}
+message RecPlayJumpRequest{
+	int32 nStreamID=1;		
+	int32 nPlayPosTime=2; 		//跳转偏移量
+	string  sBusinessID =3;  		//业务ID
+}
+message RecPlayPauseRequest{
+	int32 nStreamID=1;
+	string  sBusinessID =2;  		//业务ID
+}
+message RecPlayPlayRequest{
+	int32 nStreamID=1;
+	string  sBusinessID =2;  		//业务ID
+}
+message RecPlaySpeedRequest{
+	int32 nStreamID=1;
+	int32 nSpeed =2;		      //nSpeed:速度值 -3-1/8倍速，-2-1/4倍速，-1-1/2倍速，0-正常速度，1-2倍速，2-4倍速，3-8倍速
+	string  sBusinessID =3;  		//业务ID
+}
+
+message StopVideoRequest{
+	int32   nStreamID=1;			 //流id	
+	string  sBusinessID =2;  		//业务ID
+}
+message StopScreenRequest{
+	string  sBusinessID =1;  	  //业务ID
+	string sResUid=2;	          //屏幕资源uid
+    int32  nWindow=3;             //窗口号（解码通道号）
+	string sDevNo=4;	          //设备编号
+}
+//------------------------------------****************************------------------------------
+message SearchRecRequest{
+		string sResUid=1;	           //摄像机uid	
+		string sDevNo=2;	           //设备编号	
+		string strStartTime=3;         //开始时间
+		string strEndTime=4;           //结束时间
+		string strLabelInfo=5;         //标签名称
+		RECORD_TYPE emRecordType=6;    //录像类型
+		RECORD_SOURCE emRecordSource=7;//录像源
+		string  sBusinessID =8;  		//业务ID
+}
+message LableInfo{
+	string strLabelInfo=1;         //标签内容
+	int32  nPos=2;                 //偏移量
+	string sRecFileName=3;         //录像文件名
+	string sResUid=4;	       	   //摄像机uid	
+	string sDevNo=5;	           //设备编号
+	string sResNo=6;	           //资源编号
+}
+message SearchRecReply{
+	message RecFileInfo{
+		string strStartTime=1;         //开始时间
+		string strEndTime=2;           //结束时间
+		string strFileName=3;          //文件名称
+		int32  nFileSize=4;            //文件大小
+	    string sResNo=5;			   //摄像机No
+		repeated LableInfo msLabelInfo=6;   //标签
+		RECORD_TYPE emRecordType=7;         //录像类型（暂不使用）
+		RECORD_SOURCE emRecordSource=8;     //录像源（暂不使用）
+	}	
+	RECORD_TYPE emRecordType=1;
+	repeated RecFileInfo msRecFileInfo =2;
+	RECORD_SOURCE emRecordSource=3;
+    int32 result=4;                      //返回值
+	string sBusinessID =5;               //业务ID
+}
+enum RECORD_SOURCE
+{
+	RS_LOCAL=0;     //本地录像
+	RS_REMOTE=1;    //远程录像
+}
+enum RECORD_TYPE
+{
+	RT_TIME=0;     //时间设定
+	RT_ALARM=1;    //报警触发
+	RT_MANUAL=2;   //手动录像
+	RT_ALL=3;      //所有类型
+}
+message RecPlayInfo	{
+		//时间格式为2015-09-08 08:30:00
+		string sFileStartTime=1;	//播放的文件开始时间
+		string sFileEndTime=2;		//播放的文件结束时间
+		int32  nPlayTime=3;		    //偏移量
+		RECORD_TYPE emRecordType=4;
+		RECORD_SOURCE emRecordSource=5;
+		string strFileName=6;          //文件名称
+}
+message PlayRecRequest{
+	int32  nScreenID=1; //屏幕资源ID--录像上墙申请时使用
+	string sResUid=2;	//摄像机uid
+	string sDevNo=3;	//设备编号
+	RecPlayInfo  msRecPlayInfo=4;	//录像播放信息
+	string strIP=5;    				//收流IP
+	int32  nPort=6;					//收流端口
+	StreamParam msParam=7;      	//其他参数
+	int32 nStreamID=8;              //流ID
+	string  sBusinessID =9;  		//业务ID
+}
+message PlayRecReply{
+	int32 nStreamID=1;	//流ID
+	string strSrcIP=2;	//发流IP     
+	int32 nSrcPort=3;	//发流端口 	
+	StreamParam msParam=4;      	//其他参数
+    int32 result=5;        //返回值
+	string sBusinessID =6;          //业务ID
+}
+//------------------------------------****************************------------------------------
+message StreamParam
+{
+	int32  	nTrans=1;          //传输方式1-UDP 2-TCP 
+	int32   nPackage=2;    	   //封装方式  1-ES 2-RTP_Es 3-RTP_PS 4RTP_TS 5-VORX
+	int32	nVideoFormat=3;    //”1-MPEG4 2-H.264 3-SVAC 4-3GP 5-h265”  
+	int32	nResolution=4;	   //=”1-QCIF 2-CIF 3-4CIF 4-D1 5-720P/I 6-1080P/I”
+	int32	nMaxFrameRate=5;   //=”25” 
+	int32 	nMaxBitRate=6;	   //=”10(kbps)
+	int32	nAudioFormat=7;    //”1-G.711a 2-G.711u 3-G.723.1 4-G.729 5-G.722.1 6-aac”
+	int32	nMaxBitRat=8;	   //”1-5.3k 2-6.3k 3-8k 4-16k 5-24k 6-32k 7-48k 8-64k” 
+};
+message LiveRequest{
+	int32  nScreenID=1; 	//屏幕资源ID--上墙申请时使用
+	string sResUid=2;	    //摄像机uid	
+	string sDevNo=3;	    //设备编号
+	int32  nStreamType=4;	//1-主码流 2-子码流 3-第三码流
+	string strIP=5;    	    //收流IP
+	int32  nPort=6;		    //收流端口
+	StreamParam msParam=7;  //其他参数
+	int32  nStreamID=8;     //流ID
+	string  sBusinessID =9;  		//业务ID
+}
+message LiveReply{
+	int32  nStreamID=1;	//流ID
+	string strSrcIP=2;	//发流IP     
+	int32  nSrcPort=3;	//发流端口 
+	StreamParam msParam=4;  //其他参数
+    int32 result=5;        //返回值
+	string sBusinessID =6;          //业务ID
+}
+message LiveScreenRequest{
+	int32  nScreenID=1; 	//屏幕资源ID--上墙申请时使用(
+	string sResUid=2;	    //屏幕资源uid
+    int32  nWindow=3;
+	string sDevNo=4;	    //设备编号
+	int32  nStreamType=5;	//1-主码流 2-子码流 3-第三码流
+	string strIP=6;    	    //发流流IP（暂无用）
+	int32  nPort=7;		    //发流端口（暂无用）
+	StreamParam msParam=8;  //其他参数
+	int32  nStreamID=9;     //流ID
+	string  sBusinessID =10;  		//业务ID
+}
+message LiveScreenReply{
+	int32  nStreamID=1;	    //流ID
+	string strSrcIP=2;	    //收流IP     
+	int32  nSrcPort=3;	    //收流端口 
+	StreamParam msParam=4;  //其他参数
+    int32 result=5;         //返回值
+	string sBusinessID =6;  //业务ID
+}
+message LoginRequest {
+  string strName = 1;         //用户名
+  string strPassword=2;       //密码
+  string  sBusinessID =3;     //业务ID
+}
+
+message LoginReply {
+  int32 nSessionID = 1;    //会话ID
+  int32 result=2;          //返回值
+  string sBusinessID =3;          //业务ID
+}
+message LogoutRequest {
+  int32 nSessionID = 1;    //会话ID
+  string  sBusinessID =2;  //业务ID
+}
+message LogoutReply {
+  int32 result=1;          //返回值
+	string sBusinessID =2;          //业务ID
+}
+message SendHeartRequest {
+  int32 nSessionID = 1;
+}
+message SendHeartReply {
+  int32 result=1;          //返回值
+	string sBusinessID =2;          //业务ID
+}
+//
+message DefaultRequest {
+	string  sBusinessID =1;  //业务ID
+}
+message DefaultReply {
+  int32 result=1;           //返回值
+  string  sBusinessID =2;   //业务ID
+}
+message DefaultReport {
+  int32 result=1;           //执行结果
+  string  sBusinessID =2;   //业务ID
+  BUSINESS_TYPE emType=3;           //业务类型
+}
+enum BUSINESS_TYPE {
+    BUS_ISSUE=0;          //下发表
+	BUS_LIVE_STOP=1;      //停止实时流
+	BUS_SCREEN_STOP=2;	  //停止上墙
+	BUS_PTZ=3;	          //PTZ
+	BUS_RESET_ALARM=4;	  //报警复位
+	BUS_REBOOT=5;	      //重启
+	BUS_SWICH=6;	      //切换序列（启动/停止）
+	BUS_Guard=7;	      //布防撤防
+	BUS_RELOAD=8;	      //重载
+	BUS_RECORD=9;	      //录像开关	
+	BUS_SPEED=10;         //倍速	
+	BUS_PAUSE = 11;       //暂停
+	BUS_REPLAY = 12;	  //播放
+	BUS_JUMP = 13;	      //跳转
+	BUS_LABLE = 14;		  //标签
+}
