@@ -13,8 +13,9 @@ service VsIeyeProto {
 	rpc IssuedReslist(IssuedReslistRequest) returns (DefaultReply){} 			//下发视频设备资源表
 	rpc IssuedRecordTime(IssuedRecordTimeRequest) returns (DefaultReply){} 		//下发录像时间模板
 	rpc IssuedRecordPlan(IssuedRecordPlanRequest) returns (DefaultReply){} 		//下发录像计划模板ti_record_plan
-	rpc IssuedRecordCam(IssuedRecordCamRequest) returns (DefaultReply){}		//下发录像计划与摄像机关联表		
-//日志
+	rpc IssuedRecordCam(IssuedRecordCamRequest) returns (DefaultReply){}		//下发录像计划与摄像机关联表	
+//    rpc IssuedRecordCam(IssuedRecordCamRequest) returns (DefaultReply){}		//下发录像计划与摄像机
+	//日志
 //	rpc SentVSLog(VSLogRequest) returns(VSLogResponse);
 //	rpc SentMultiVSLog(MultiVSLogRequest) returns(MultiVSLogResponse);
 //会话
@@ -96,14 +97,14 @@ message ServerControlRequest{
 }
 message DynSplitScreenRequest{
 	string sResUid=1;	          //屏幕资源uid
-    string sWindow=2;	          //window（解码通道）
+    int32 nWindow=2;	          //window（解码通道）
 	string sDevNo=3;	          //设备编号
 	SPLIT_SCREEN_MODE  emMode=4;  //分屏模式
 	string sBusinessID =5;        //业务ID
 }
 message FullScreenRequest{	
 	string sResUid=1;	          //屏幕资源uid
-    string sWindow=2;
+    int32 nWindow=2;
 	string sDevNo=3;	          //设备编号
 	int32  nFull=4;               //0-取消全屏 1全屏
 	string sBusinessID =5;        //业务ID
@@ -181,12 +182,12 @@ message ReportEventRequest{
 		string sDevName=7;              //设备名称（可不赋值）
 	    string sResName=8;              //资源名称（可不赋值）
 		string sPicpath=9;              //事件图片	
-		string sEventlevel=10;          //事件级别		
+		int32  nEventlevel=10;          //事件级别		
 		int32  nEventlogID=11;          //事件logID
+	    int32  nSvrID = 12;             //服务id
 	}	
 	repeated 	Events events=1;			
 	string sBusinessID =2;              //业务ID
-	int32  nSvrID = 3;                  //服务id
 }
 
 ////数据结构**********
@@ -529,12 +530,15 @@ enum RELOAD_TYPE{
 	REL_EVENT_INFO=5;   //事件信息
 	REL_EVENT_GUARD=6;  //事件布防
 	REL_EVENT_CONTACTS=7;  //事件联系人
-	REL_EVENT_Storm=8;  //事件风暴
-	REL_EVENT_LINKAGE=9;  //事件联动
+	REL_EVENT_STORM=8;  //事件风暴
+	REL_EVENT_LINKAGE=9;//事件联动
+	
 }
 message ReloadRequest{
 	RELOAD_TYPE loadType=1;     //重载类型
 	string  sBusinessID =2;  	//业务ID
+	OPT_ACT  emAct =2;          //操作
+	repeated int32 idList = 3;     //增删改的id
 }
 message RunLogRequest{
 	int32 nSvrId =1;		    //服务ID
@@ -601,7 +605,7 @@ message StopVideoRequest{
 message StopScreenRequest{
 	string sBusinessID =1;  	  //业务ID
 	string sResUid=2;	          //屏幕资源uid
-    string sWindow=3;             //窗口号（解码通道号）
+    int32  nWindow=3;             //窗口号（解码通道号）
 	string sDevNo=4;	          //设备编号
 	string sResNo =5;  		      //摄像机资源no
 	string sScreenResNo =6;  	  //屏幕资源no
@@ -718,15 +722,15 @@ message LiveReply{
 message LiveScreenRequest{
 	string sScreenResNo=1; 	//屏幕资源No--上墙申请时使用
 	string sResUid=2;	    //屏幕资源uid
-    string sWindow=3;       //屏幕分屏窗口号
+    int32 nWindow=3;       //屏幕分屏窗口号
 	string sDevNo=4;	    //设备编号
 	int32  nStreamType=5;	//1-主码流 2-子码流 3-第三码流
 	string strIP=6;    	    //发流流IP（暂无用）
 	int32  nPort=7;		    //发流端口（暂无用）
 	StreamParam msParam=8;  //其他参数
 	int32  nStreamID=9;     //流ID
-	string  sBusinessID =10;  		//业务ID
-	string sResNo =11;  		//资源编号
+	string  sBusinessID =10;//业务ID
+	string sResNo =11;  	//摄像机资源编号
 }
 message LiveScreenReply{
 	int32  nStreamID=1;	    //流ID
@@ -784,7 +788,7 @@ enum BUSINESS_TYPE {
 	BUS_RESET_ALARM=4;	  //报警复位
 	BUS_REBOOT=5;	      //重启
 	BUS_SWICH=6;	      //切换序列（启动/停止）
-	BUS_Guard=7;	      //布防撤防
+	BUS_GUARD=7;	      //布防撤防
 	BUS_RELOAD=8;	      //重载
 	BUS_RECORD=9;	      //录像开关	
 	BUS_SPEED=10;         //倍速	
