@@ -537,8 +537,8 @@ enum RELOAD_TYPE{
 message ReloadRequest{
 	RELOAD_TYPE loadType=1;     //重载类型
 	string  sBusinessID =2;  	//业务ID
-	OPT_ACT  emAct =2;          //操作
-	repeated int32 idList = 3;     //增删改的id
+	OPT_ACT  emAct =3;          //操作
+	repeated int32 idList = 4;     //增删改的id
 }
 message RunLogRequest{
 	int32 nSvrId =1;		    //服务ID
