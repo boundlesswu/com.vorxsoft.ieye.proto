@@ -109,6 +109,8 @@ service VsIeyeProto {
     //上报结果
     rpc ReportEvent (ReportEventRequest) returns (DefaultReply) {
     } //上报事件
+    rpc ReportLinkage (ReportLinkageRequest) returns (DefaultReply) {
+    } //上报事件
     rpc ReportDevStates (ReportDevStatesRequest) returns (DefaultReply) {
     } //上报状态
     rpc ReportDefaultResult (DefaultReport) returns (DefaultReply) {
@@ -225,22 +227,36 @@ message EventSubscribeRequest {
     string sEventType = 2; //事件类型
     repeated EventSubInfo events = 3;
 }
+message Linkage {
+    int32 nLinkageID = 1;
+    int32 nEventID = 2;
+    string sLinkageType = 3;
+    repeated string sArgs = 4;
+}
+message Events {
+    string sResNo = 1; //资源no
+    string sDevNo = 2; //设备编号
+    string sEventName = 3; //事件名称
+    string sEventType = 4; //事件类型
+    string sHappentime = 5; //事件时间
+    int32 nEventID = 6; //事件ID（可不处理）
+    string sDevName = 7; //设备名称（可不赋值）
+    string sResName = 8; //资源名称（可不赋值）
+    string sPicpath = 9; //事件图片
+    int32 nEventlevel = 10; //事件级别
+    int32 nEventlogID = 11; //事件logID
+    int32 nSvrID = 12; //服务id
+}
+message EventLinkage {
+    Events event = 1;
+    repeated Linkage linkages = 2;
+}
 message ReportEventRequest {
-    message Events {
-        string sResNo = 1; //资源no
-        string sDevNo = 2; //设备编号
-        string sEventName = 3; //事件名称
-        string sEventType = 4; //事件类型
-        string sHappentime = 5; //事件时间
-        int32 nEventID = 6; //事件ID（可不处理）
-        string sDevName = 7; //设备名称（可不赋值）
-        string sResName = 8; //资源名称（可不赋值）
-        string sPicpath = 9; //事件图片
-        int32 nEventlevel = 10; //事件级别
-        int32 nEventlogID = 11; //事件logID
-        int32 nSvrID = 12; //服务id
-    }
     repeated Events events = 1;
+    string sBusinessID = 2; //业务ID
+}
+message ReportLinkageRequest {
+    repeated EventLinkage eventLinkage = 1;
     string sBusinessID = 2; //业务ID
 }
 
