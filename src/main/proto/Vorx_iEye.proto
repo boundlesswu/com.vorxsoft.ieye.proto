@@ -247,16 +247,16 @@ message Events {
     int32 nEventlogID = 11; //事件logID
     int32 nSvrID = 12; //服务id
 }
-message EventLinkage {
+message EventWithLinkage {
     Events event = 1;
     repeated Linkage linkages = 2;
 }
 message ReportEventRequest {
     repeated Events events = 1;
-    string sBusinessID = 2; //业务ID
+    string sBusinessID = 2; //业务IDWith
 }
 message ReportLinkageRequest {
-    repeated EventLinkage eventLinkage = 1;
+    repeated EventWithLinkage eventWithLinkages = 1;
     string sBusinessID = 2; //业务ID
 }
 
