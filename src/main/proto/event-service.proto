@@ -5,11 +5,11 @@ option java_multiple_files = true;
 option java_outer_classname = "EventService";
 
 package com.vorxsoft.ieye.proto;
-enum VSEventGenus{
+enum VSEventGenus {
     event_genus_null = 0;
     event_genus_monitor = 1;
-    event_genus_sio =2;
-    event_genus_ia=3;
+    event_genus_sio = 2;
+    event_genus_ia = 3;
     event_genus_device = 4;
     event_genus_server = 5;
     event_genus_enviroment = 6;
@@ -17,11 +17,11 @@ enum VSEventGenus{
     genus_work_monitor = 8;
     genus_manual_record = 9;
 }
-message getVSEventGenusRequest{
-    VSEventGenus type=1;
+message getVSEventGenusRequest {
+    VSEventGenus type = 1;
 }
-message getVSEventGenusResponse{
-    string name=1;
+message getVSEventGenusResponse {
+    string name = 1;
 }
 enum VSEventType {
     event_null = 0;
@@ -68,9 +68,9 @@ enum VSEventType {
     //烟雾报警	event_smoke
     event_sio_smoke = 202;
     //温度报警	event_temperature
-    event_sio_temperature =  203;
+    event_sio_temperature = 203;
     //火灾报警	event_fire
-    event_sio_fire = 204 ;
+    event_sio_fire = 204;
     //燃气报警	event_gas
     event_sio_gas = 205;
     //红外报警	event_infrared
@@ -81,12 +81,12 @@ enum VSEventType {
     event_sio_leakage = 208;
 
     event_ia = 3;
-//    停驶	event_ia_traffic_stop
-//行人	event_ia_traffic_human
-//逆行	event_ia_traffic_converse
-//路况	event_ia_traffic_condition
-//非法慢速	event_ia_traffic_lowspeed
-//车流量	event_ia_traffic_flowrate
+    //    停驶	event_ia_traffic_stop
+    //行人	event_ia_traffic_human
+    //逆行	event_ia_traffic_converse
+    //路况	event_ia_traffic_condition
+    //非法慢速	event_ia_traffic_lowspeed
+    //车流量	event_ia_traffic_flowrate
 
     //高速车辆停驶
     event_ia_traffic_stop = 301;
@@ -95,15 +95,15 @@ enum VSEventType {
     //高速车辆逆行
     event_ia_traffic_converse = 303;
     //高速车辆缓行
-    event_ia_traffic_lowspeed= 304;
+    event_ia_traffic_lowspeed = 304;
     //高速公路路况
-    event_ia_traffic_condition= 305;
+    event_ia_traffic_condition = 305;
     //高速公路车流量
     event_ia_traffic_flowrate = 306;
 
     event_device = 4;
     //设备离线	event_dev_offline
-    event_dev_offline =  401;
+    event_dev_offline = 401;
     //硬盘满	event_dev_disk_full
     event_dev_disk_full = 402;
     //硬盘错误	event_dev_disk_err
@@ -113,7 +113,7 @@ enum VSEventType {
 
     event_server = 5;
     //服务器离线	event_svr_offline
-    event_svr_offline= 501;
+    event_svr_offline = 501;
     //cpu占用率过高	event_svr_cpu
     event_svr_cpu = 502;
     //内存占用率过高	event_svr_ram
@@ -146,22 +146,22 @@ enum VSEventType {
     //业务监测类（预留）		work_monitor
     work_monitor = 8;
     //工作超时	work_overtime_alarm
-    work_overtime_alarm =  801;
+    work_overtime_alarm = 801;
 
     //人工录入类（预留）		manual_record
     manual_record = 9;
-	//施工	construction_event
+    //施工	construction_event
     construction_event = 901;
-	//拥堵	traffic_jam_event
+    //拥堵	traffic_jam_event
     traffic_jam_event = 902;
-	//塌方	landslide_event
+    //塌方	landslide_event
     landslide_event = 903;
 }
 
-enum VSGuardPlanType{
+enum VSGuardPlanType {
     VSGuardPlanTypeNull = 0;
-   VSGuardPlanTypePermanent=1;
-   VSGuardPlanTypeTemporary=2;
+    VSGuardPlanTypePermanent = 1;
+    VSGuardPlanTypeTemporary = 2;
 }
 
 enum VSEventAlarmLevel {
@@ -171,7 +171,7 @@ enum VSEventAlarmLevel {
     AlarmLevelMinor = 3;
     AlarmLevelInfo = 4;
 }
-message VSEventContactsInfo{
+message VSEventContactsInfo {
     int32 contactId = 1;
     string name = 2;
     string email = 3;
@@ -179,109 +179,109 @@ message VSEventContactsInfo{
     string cellPhoneNumber = 5;
 }
 
-message VSEventStomInfo{
+message VSEventStomInfo {
     int32 stormId = 1;
     VSEventType eventType = 2;
-    int32 eventStormInterval=3;
+    int32 eventStormInterval = 3;
 }
 
-message VSEventGuardPlanInfo{
-    int32 guardPlanId=1;
-    string guardPlanName=2;
-    string timeSchedule=3;
+message VSEventGuardPlanInfo {
+    int32 guardPlanId = 1;
+    string guardPlanName = 2;
+    string timeSchedule = 3;
     VSGuardPlanType guardPlayType = 4;
     string startTime = 5;
     string endTime = 6;
 }
 
-message VSEventInfo{
-    int32 eventId=1;
-    string eventNumber=2;
-    VSEventType eventType=3;
-    string eventName=4;
-    string eventDesc=5;
-    bool eventStatus=6;
+message VSEventInfo {
+    int32 eventId = 1;
+    string eventNumber = 2;
+    VSEventType eventType = 3;
+    string eventName = 4;
+    string eventDesc = 5;
+    bool eventStatus = 6;
     VSEventAlarmLevel eventAlarmLevel = 7;
-    bool eventLinkage=8;
-    int32 autoReleaseInterval=9;
-    int32 guardPlanId=10;
+    bool eventLinkage = 8;
+    int32 autoReleaseInterval = 9;
+    int32 guardPlanId = 10;
 }
 
-enum VSLinkageType{
-    VSLinkageTypeClient=0;
-    VSLinkageTypeWall=1;
-    VSLinkageTypePreset=2;
-    VSLinkageTypeCruise=3;
-    VSLinkageTypeSio=4;
-    VSLinkageTypeRecord=5;
-    VSLinkageTypeSms=6;
-    VSLinkageTypeSnapshot=7;
-    LinkageTypeEmail=8;
+enum VSLinkageType {
+    VSLinkageTypeClient = 0;
+    VSLinkageTypeWall = 1;
+    VSLinkageTypePreset = 2;
+    VSLinkageTypeCruise = 3;
+    VSLinkageTypeSio = 4;
+    VSLinkageTypeRecord = 5;
+    VSLinkageTypeSms = 6;
+    VSLinkageTypeSnapshot = 7;
+    LinkageTypeEmail = 8;
 }
 
-message VSEventLinkageInfo{
-    int32 linkageId=1;
-    int32 eventId=2;
-    VSLinkageType linkageType=3;
+message VSEventLinkageInfo {
+    int32 linkageId = 1;
+    int32 eventId = 2;
+    VSLinkageType linkageType = 3;
     repeated string linkageArgs = 4;
 }
 
-message VSEventLinkActionRequest{
-    VSEventInfo eventinfo=1;
-    VSEventLinkageInfo   eventLinkageInfo=2;
+message VSEventLinkActionRequest {
+    VSEventInfo eventinfo = 1;
+    VSEventLinkageInfo eventLinkageInfo = 2;
 }
 
-message VSEventLinkActionResponse{
-    int32 eventId=1;
-    int32 linkageId=2;
-    bool result=3;
+message VSEventLinkActionResponse {
+    int32 eventId = 1;
+    int32 linkageId = 2;
+    bool result = 3;
 }
 
-message VSEventRequest{
-    int32 eventId=1;
+message VSEventRequest {
+    int32 eventId = 1;
     //VSEventInfo eventInfo=1;
     VSEventType evenType = 2;
 
     string extraContent = 3;
 }
-message VSEventResponse{
-    int32 eventId=1;
+message VSEventResponse {
+    int32 eventId = 1;
     bool result = 2;
 }
 
-message VSMonitorAlarm{
+message VSMonitorAlarm {
     VSEventType evenType = 1;
     int32 resourceId = 2;
     google.protobuf.Timestamp happenTime = 3;
     string extraContent = 4;
 }
-message VSSioAlarm{
+message VSSioAlarm {
     VSEventType evenType = 1;
     int32 resourceId = 2;
     google.protobuf.Timestamp happenTime = 3;
     string extraContent = 4;
 }
-message VSIaAlarm{
+message VSIaAlarm {
     VSEventType evenType = 1;
-    int32 resourceId = 2 ;
+    int32 resourceId = 2;
     int32 iaagId = 3;
     int32 iauId = 4;
     google.protobuf.Timestamp happenTime = 5;
     string extraContent = 6;
 }
-message VSServerAlarm{
+message VSServerAlarm {
     VSEventType evenType = 1;
     int32 machineId = 2;
     google.protobuf.Timestamp happenTime = 3;
     string extraContent = 4;
 }
-message VSDeviceAlarm{
+message VSDeviceAlarm {
     VSEventType evenType = 1;
     int32 deviceId = 2;
     google.protobuf.Timestamp happenTime = 3;
     string extraContent = 4;
 }
-message VSAlarmRequest{
+message VSAlarmRequest {
     repeated VSMonitorAlarm monitorAlarm = 1;
     repeated VSSioAlarm sioAlarm = 2;
     repeated VSIaAlarm iaAlarm = 3;
@@ -290,7 +290,7 @@ message VSAlarmRequest{
     int32 serialId = 6;
 }
 
-message VSAlarmResponse{
+message VSAlarmResponse {
     int32 serialId = 1;
     bool result = 3;
 }
@@ -302,24 +302,24 @@ message VSAlarmResponse{
 //    int32 eventId=1;
 //    bool result=2;
 //}
-enum VSConfigType{
+enum VSConfigType {
     VSConfigTypeEvent = 0;
     VSConfigTypeLinkAge = 1;
     VSConfigTypeOther = 2;
 }
-message DistributeConfigRequest{
-    int32  distributeId = 1;
+message DistributeConfigRequest {
+    int32 distributeId = 1;
     VSConfigType configType = 2;
 }
-message DistributeConfigResponse{
-    int32  distributeId = 1;
+message DistributeConfigResponse {
+    int32 distributeId = 1;
     bool result = 2;
 }
 
-service VSEventService{
-    rpc getVSEventGenus(getVSEventGenusRequest)  returns(getVSEventGenusResponse);
-   rpc SentAlarm(VSAlarmRequest) returns(VSAlarmResponse);
-   rpc SentEvent(VSEventRequest) returns(VSEventResponse);
-   rpc DistributeConfig(DistributeConfigRequest) returns(DistributeConfigResponse);
-   rpc SendEventLinkAction(VSEventLinkActionRequest) returns(VSEventLinkActionResponse);
+service VSEventService {
+    rpc getVSEventGenus (getVSEventGenusRequest) returns (getVSEventGenusResponse);
+    rpc SentAlarm (VSAlarmRequest) returns (VSAlarmResponse);
+    rpc SentEvent (VSEventRequest) returns (VSEventResponse);
+    rpc DistributeConfig (DistributeConfigRequest) returns (DistributeConfigResponse);
+    rpc SendEventLinkAction (VSEventLinkActionRequest) returns (VSEventLinkActionResponse);
 }

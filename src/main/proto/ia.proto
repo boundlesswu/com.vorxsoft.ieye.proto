@@ -5,69 +5,71 @@ option java_outer_classname = "IA";
 
 package com.vorxsoft.ieye.proto;
 
-message IAAGInfo{
-    string name = 1;
-    string ipEx = 2;
-    string ipIn = 3;
-    int32 port = 4;
-}
-
-message IAUInfo{
-    string name = 1;
-    string protocolType = 2;
-    string channelNum = 3;
-    string ip =  4;
+message IAAGInfo {
+    int32 id = 1;
+    string name = 2;
+    string ipEx = 3;
+    string ipIn = 4;
     int32 port = 5;
 }
 
-message QueryIAAGRequest{
-    string ip =  1;
+message IAUInfo {
+    int32 id = 1;
+    string name = 2;
+    string protocolType = 3;
+    string channelNum = 4;
+    string ip = 5;
+    int32 port = 6;
+}
+
+message QueryIAAGRequest {
+    string ip = 1;
     int32 port = 2;
 }
 
-message QueryIAAGResponse{
+message QueryIAAGResponse {
     IAAGInfo iaagInfo = 1;
 }
 
-message QueryIAUListRequest{
-    string ip =  1;
+message QueryIAUListRequest {
+    string ip = 1;
     int32 port = 2;
 }
-message QueryIAUListResponse{
+message QueryIAUListResponse {
     repeated IAUInfo iauList = 1;
 }
-enum StateType{
+enum StateType {
     IAStateTypeIAAG = 0;
     IAStateTypeIAU = 1;
 }
-message SentState{
+message SentState {
     StateType type = 1;
     int32 id = 2;
     int32 maxCnt = 3;
     int32 curCnt = 4;
 }
 
-message SentStateRequest{
+message SentStateRequest {
     repeated SentState stateList = 1;
 }
-message SentStateResponse{
+message SentStateResponse {
     StateType type = 1;
     int32 id = 2;
     bool result = 3;
 }
 
 
-enum IACMDType{
+enum IACMDType {
     Start = 0;
     Stop = 1;
 }
 
-message ResInfo{
-    int32  resourceId = 1;		    //资源ID
-    string resourceNo = 2;			//资源编号
-    int32  deviceId = 3;			//设备ID
-    string deviceNo = 4;            //设备编号
-    string resourceUid = 5;			//资源UID
+message ResInfo {
+    int32 resourceId = 1; //资源ID
+    string resourceNo = 2; //资源编号
+    int32 deviceId = 3; //设备ID
+    string deviceNo = 4; //设备编号
+    string resourceUid = 5; //资源UID
 }
 
 message SentIACMDRequest {
@@ -75,26 +77,26 @@ message SentIACMDRequest {
     repeated ResInfo resInfoList = 2;
     IACMDType cmdType = 3;
 }
-message SentIACMDResponse{
+message SentIACMDResponse {
     int32 cmdId = 1;
     bool result = 2;
 }
 
-message IAU4Res{
-        string rNo = 1;
-        int32 IAUId = 2;
-        string ip = 3;
-        string port = 4;
-        string rPort = 5;
+message IAU4Res {
+    string rNo = 1;
+    int32 IAUId = 2;
+    string ip = 3;
+    string port = 4;
+    string rPort = 5;
 }
 
 message SentIACMDReslutRequest {
     int32 cmdId = 1;
     repeated IAU4Res iauRes = 2;
 }
-message SentIACMDReslutResponse{
+message SentIACMDReslutResponse {
     int32 cmdId = 1;
-    bool result = 2 ;
+    bool result = 2;
 }
 
 //service IAQueryService {
@@ -112,10 +114,10 @@ message SentIACMDReslutResponse{
 //    rpc SentIACMD(SentIACMDRequest) returns(SentIACMDResponse);
 //}
 
-service VSIAService{
-    rpc QueryIAAG(QueryIAAGRequest) returns(QueryIAAGResponse);
-    rpc QueryIAUList(QueryIAUListRequest) returns(QueryIAUListResponse);
-    rpc SentState(SentStateRequest) returns(SentStateResponse);
-    rpc SentIACMD(SentIACMDRequest) returns(SentIACMDResponse);
-    rpc SentIACMDReslut(SentIACMDReslutRequest) returns(SentIACMDReslutResponse);
+service VSIAService {
+    rpc QueryIAAG (QueryIAAGRequest) returns (QueryIAAGResponse);
+    rpc QueryIAUList (QueryIAUListRequest) returns (QueryIAUListResponse);
+    rpc SentState (SentStateRequest) returns (SentStateResponse);
+    rpc SentIACMD (SentIACMDRequest) returns (SentIACMDResponse);
+    rpc SentIACMDReslut (SentIACMDReslutRequest) returns (SentIACMDReslutResponse);
 }
