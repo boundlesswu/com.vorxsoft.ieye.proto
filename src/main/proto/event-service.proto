@@ -252,13 +252,13 @@ message VSEventResponse {
 message VSMonitorAlarm {
     VSEventType evenType = 1;
     int32 resourceId = 2;
-    google.protobuf.Timestamp happenTime = 3;
+    string happenTime = 3;
     string extraContent = 4;
 }
 message VSSioAlarm {
     VSEventType evenType = 1;
     int32 resourceId = 2;
-    google.protobuf.Timestamp happenTime = 3;
+    string happenTime = 3;
     string extraContent = 4;
 }
 message VSIaAlarm {
@@ -266,19 +266,19 @@ message VSIaAlarm {
     int32 resourceId = 2;
     int32 iaagId = 3;
     int32 iauId = 4;
-    google.protobuf.Timestamp happenTime = 5;
+    string happenTime = 5;
     string extraContent = 6;
 }
 message VSServerAlarm {
     VSEventType evenType = 1;
     int32 machineId = 2;
-    google.protobuf.Timestamp happenTime = 3;
+    string happenTime = 3;
     string extraContent = 4;
 }
 message VSDeviceAlarm {
     VSEventType evenType = 1;
     int32 deviceId = 2;
-    google.protobuf.Timestamp happenTime = 3;
+    string happenTime = 3;
     string extraContent = 4;
 }
 message VSAlarmRequest {
