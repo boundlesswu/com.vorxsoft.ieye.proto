@@ -18,7 +18,7 @@ service VsIeyeProto {
     } //下发录像计划模板ti_record_plan
     rpc IssuedRecordCam (IssuedRecordCamRequest) returns (DefaultReply) {
     } //下发录像计划与摄像机关联表
-	
+
     //日志
     //	rpc SentVSLog(VSLogRequest) returns(VSLogResponse);
     //	rpc SentMultiVSLog(MultiVSLogRequest) returns(MultiVSLogResponse);
@@ -246,7 +246,7 @@ message Events {
     int32 nEventlevel = 10; //事件级别
     int32 nEventlogID = 11; //事件logID
     int32 nSvrID = 12; //服务id
-	string sExtraParam = 13;//扩展参数
+    string sExtraParam = 13; //扩展参数
 }
 message EventWithLinkage {
     Events event = 1;
@@ -318,9 +318,9 @@ message IssuedReslistRequest {
         string sResUID = 6; //资源UID
         int32 nChnType = 7; //通道类型
         string sDevNo = 8; //设备编号
-        int32 flag_split = 9;//是否支持动态分屏 0-不支持；1-支持
-        int32 display_mode = 10;//显示制式1-hdmi；2-dvi；3-bnc
-        int32 resolution = 11;//分辨率。预留
+        int32 flag_split = 9; //是否支持动态分屏 0-不支持；1-支持
+        int32 display_mode = 10; //显示制式1-hdmi；2-dvi；3-bnc
+        int32 resolution = 11; //分辨率。预留
         int32 split_ability = 12; //分屏能力，该通道最大分屏能力。1-单屏；2-2x2；3-3x3；4-4x4
         int32 split_mode = 13; //分屏模式，当前分屏模式。1-单屏；2-2x2；3-3x3；4-4x4
         int32 switch_mode = 14; //切换子码流规则 0代表不自动切换。1-单屏；2-2x2；3-3x3；4-4x4当≧该分屏模式时，将自动切换为子码流
@@ -493,6 +493,8 @@ message PTZControlRequest {
     int32 ntSpeed = 5; //t速度
     int32 nzSpeed = 6; //z速度
     string sBusinessID = 7; //业务ID
+    string sResNo = 8; //摄像机资源No
+    int32 nResid = 9; //摄像机资源id
 }
 
 message PTZPresetRequest {
@@ -503,7 +505,7 @@ message PTZPresetRequest {
     string sPresetNo = 5; //预置位编号/名称（按数字传递），预置位标识。
     string sBusinessID = 6; //业务ID
     string sResNo = 7; //摄像机资源No
-    int32  nResid = 8; //摄像机资源id
+    int32 nResid = 8; //摄像机资源id
 }
 
 message PTZCruiseRequest {
@@ -522,7 +524,7 @@ message PTZCruiseRequest {
     string cruise_no = 7; //编号
     string cruise_name = 8; //名称
     string sResNo = 9; //摄像机资源No
-    int32  nResid = 10; //摄像机资源id
+    int32 nResid = 10; //摄像机资源id
 }
 message SwitchSequenceRequest {
     int32 nSequenceNo = 1;
@@ -549,6 +551,9 @@ message RecordControlRequest {
     bool bStart = 3; //1启动 0停止
     string sBusinessID = 4; //业务ID
     string sResNo = 5; //摄像机资源No
+    int32 nRectime = 6; //录像时长（单位：min）--默认3min
+    int32 nRecType = 7; //录像类型（1-定时 2-报警 3-点播 4-联动）
+    int32 nStreamType = 8; //码流类型（1-主码流 2-子码流 3-第三码流）
 }
 message GuardControlRequest {
     string sResUid = 1;
