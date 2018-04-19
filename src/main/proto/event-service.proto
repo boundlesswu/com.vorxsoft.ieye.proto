@@ -100,6 +100,12 @@ enum VSEventType {
     event_ia_traffic_condition = 305;
     //高速公路车流量
     event_ia_traffic_flowrate = 306;
+    //烟雾
+    event_ia_traffic_smoke = 307;
+    //抛洒物
+    event_ia_traffic_abandoned = 308;
+    //拥堵
+    event_ia_traffic_jam = 309;
 
     event_device = 4;
     //设备离线	event_dev_offline

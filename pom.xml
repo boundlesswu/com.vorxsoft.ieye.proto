@@ -6,7 +6,7 @@
 
     <groupId>com.vorxsoft.ieye</groupId>
     <artifactId>proto</artifactId>
-    <version>4.0.1.2</version>
+    <version>4.0.4.1</version>
 
     <properties>
         <maven.protobuf.plugin.version>0.5.0</maven.protobuf.plugin.version>

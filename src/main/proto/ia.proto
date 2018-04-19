@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_outer_classname = "IA";
+import "event-service.proto";
 
 package com.vorxsoft.ieye.proto;
+option java_multiple_files = true;
+option java_outer_classname = "IA";
 
 message IAAGInfo {
     int32 id = 1;
@@ -58,10 +59,22 @@ message SentStateResponse {
     bool result = 3;
 }
 
-
 enum IACMDType {
     Start = 0;
     Stop = 1;
+}
+message Point {
+    float x = 1;
+    float y = 2;
+}
+//message ResResolution {
+//    uint32 x = 1;
+//    uint32 y = 2;
+//}
+
+message Zoom {
+    repeated Point  points = 1;
+    bool isAnalysis = 2; //true:分析区域 false:忽略区域
 }
 
 message ResInfo {
@@ -70,6 +83,8 @@ message ResInfo {
     int32 deviceId = 3; //设备ID
     string deviceNo = 4; //设备编号
     string resourceUid = 5; //资源UID
+    //ResResolution resolution = 6; //资源分辨率
+    repeated Zoom zoom =6;//分析或者忽略区域
 }
 
 message SentIACMDRequest {
@@ -98,7 +113,15 @@ message SentIACMDReslutResponse {
     int32 cmdId = 1;
     bool result = 2;
 }
-
+message SentIAIntervalRequest {
+    int32 cmdId = 1;
+    VSEventType type = 2;
+    int32 interval = 3;
+}
+message SentIAIntervalResponse {
+    int32 cmdId = 1;
+    bool result = 2;
+}
 //service IAQueryService {
 //    //request or response must be message
 //    rpc QueryIAAG(QueryIAAGRequest) returns(QueryIAAGResponse);
@@ -119,5 +142,7 @@ service VSIAService {
     rpc QueryIAUList (QueryIAUListRequest) returns (QueryIAUListResponse);
     rpc SentState (SentStateRequest) returns (SentStateResponse);
     rpc SentIACMD (SentIACMDRequest) returns (SentIACMDResponse);
+    //send interval to iaag
+    rpc SentIAInterval (SentIAIntervalRequest) returns (SentIAIntervalResponse);
     rpc SentIACMDReslut (SentIACMDReslutRequest) returns (SentIACMDReslutResponse);
 }
