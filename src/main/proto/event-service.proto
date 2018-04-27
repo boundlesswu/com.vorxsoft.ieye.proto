@@ -116,6 +116,9 @@ enum VSEventType {
     event_dev_disk_err = 403;
     //升级失败	event_dev_update_fail
     event_dev_update_fail = 404;
+    event_dev_cpu = 405;
+    event_dev_ram = 406;
+    event_dev_record_err=407;
 
     event_server = 5;
     //服务器离线	event_svr_offline
